@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: flexvolume
+  namespace: kube-system
+  labels:
+    k8s-volume: flexvolume
+spec:
+  selector:
+    matchLabels:
+      name: acs-flexvolume
+  template:
+    metadata:
+      labels:
+        name: acs-flexvolume
+    spec:
+      hostPID: true
+      hostNetwork: true
+      tolerations:
+      - operator: Exists
+      priorityClassName: system-node-critical
+      containers:
+      - name: acs-flexvolume
+        #image: registry.cn-hangzhou.aliyuncs.com/acs/flexvolume:v1.12.6.16-1f4c6cb-aliyun
+        image: registry.cn-hangzhou.aliyuncs.com/acs/flexvolume:v1.12.6.52-f6604e5-aliyun
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        env:
+        - name: ACS_DISK
+          value: "true"
+        - name: ACS_NAS
+          value: "true"
+        - name: ACS_OSS
+          value: "true"
+        - name: ACS_CPFS
+          value: "false"
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - ps -ef |grep /acs/flexvolume | grep monitoring | grep -v grep
+          failureThreshold: 8
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
+        volumeMounts:
+        - name: usrdir
+          mountPath: /host/usr/
+        - name: etcdir
+          mountPath: /host/etc/
+        - name: logdir
+          mountPath: /var/log/alicloud/
+      volumes:
+      - name: usrdir
+        hostPath:
+          path: /usr/
+      - name: etcdir
+        hostPath:
+          path: /etc/
+      - name: logdir
+        hostPath:
+          path: /var/log/alicloud/
+  updateStrategy:
+    type: RollingUpdate

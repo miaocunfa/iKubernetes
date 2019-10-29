@@ -1,0 +1,27 @@
+---
+kind: Pod
+apiVersion: v1
+metadata: 
+  name: pod-demo
+  namespace: default
+  labels:
+    app: myapp
+    tier: frontend
+  annotations:
+    test.com/created-by: "admin miao"
+spec:
+  containers:
+  - name: myapp
+    image: nginx
+    ports:
+    - name: http
+      containerPort: 80
+  - name: busybox
+    image: busybox:latest
+    imagePullPolicy: IfNotPresent
+    command:
+    - "/bin/sh"
+    - "-c"
+    - "sleep 3600"
+  nodeSelector:
+    disktype: ssd

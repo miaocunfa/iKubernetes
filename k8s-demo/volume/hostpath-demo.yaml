@@ -1,0 +1,20 @@
+---
+kind: Pod
+apiVersion: v1
+metadata: 
+  name: hostpath-demo
+  namespace: default
+  labels:
+    app: hostpath
+spec:
+  containers:
+  - name: myapp
+    image: ikubernetes/myapp:v1
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html/
+  volumes:
+  - name: html
+    hostPath:
+      path: /data/pod/volume_1
+      type: DirectoryOrCreate

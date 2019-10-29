@@ -1,0 +1,32 @@
+---
+kind: Pod
+apiVersion: v1
+metadata: 
+  name: emptydir-demo
+  namespace: default
+  labels:
+    app: emptydir
+spec:
+  containers:
+  - name: myapp
+    image: ikubernetes/myapp:v1
+    imagePullPolicy: IfNotPresent
+    ports:
+    - name: http
+      containerPort: 80
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html/
+  - name: busybox
+    image: busybox:latest
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: html
+      mountPath: /data/
+    command:
+    - "/bin/sh"
+    - "-c"
+    - "while true; do echo $(date) >> /data/index.html; sleep 2; done"
+  volumes:
+  - name: html
+    emptyDir: {}

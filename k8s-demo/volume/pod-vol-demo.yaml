@@ -1,0 +1,34 @@
+---
+kind: Pod
+apiVersion: v1
+metadata: 
+  name: pod-vol-demo
+  namespace: default
+  labels:
+    app: myapp
+    tier: frontend
+  annotations:
+    miaocf.com/created-by: "admin_miao"
+spec:
+  containers:
+  - name: myapp
+    image: ikubernetes/myapp:v1
+    ports:
+    - name: http
+      containerPort: 80
+    volumeMounts:
+    - name: html
+      mountPath: /data/web/html/
+  - name: busybox
+    image: busybox:latest
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: html
+      mountPath: /data/
+    command:
+    - "/bin/sh"
+    - "-c"
+    - "echo $(date) >> /data/index.html"
+  volumes:
+  - name: html
+    emptyDir: {}
