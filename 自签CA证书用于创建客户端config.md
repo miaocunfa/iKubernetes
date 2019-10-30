@@ -1,3 +1,6 @@
+# 自签CA证书用于创建客户端config
+***
+
 ## 1、自签CA证书
 ``` bash
 # 使用kubeadm创建的kubernetes集群CA证书默认位置
@@ -44,7 +47,7 @@ Certificate:
 kubectl config --kubeconfig=/tmp/miao.config use-context miao@mycluster
 ```
 
-### /tmp/miao.config文件内容如下
+### /tmp/miao.config文件
 ```
 [root@master ~]# cat /tmp/miao.config 
 apiVersion: v1
@@ -69,4 +72,4 @@ users:
 ```
 
 ## 3、如果是新增用户，不是新建config呢？
-通过以上步骤我们创建了一个新的用于连接kubernetes集群的config文件, 如果我们在执行`kubectl config`命令时不指明`--kubeconfig`的路径, 那么以上创建的用户会配置在默认config文件中, 那么设想一下如果config文件中有多个kubernetes集群以及用户, 我们使用kubectl命令连接的是哪个kubernetes集群呢？kubernetes使用了上下文这个设置非常巧妙的解决了我们管理多个集群的问题。上下文我理解为使用哪个用户登录哪个集群, 又设置了一个选项current-context用来当前使用哪个上下文, 在我们需要切换用户的时候只需要执行`kubectl config use-context miao@mycluster`来切换用户即可。
+通过以上步骤我们创建了一个新的用于连接 kubernetes 集群的 config 文件，如果我们在执行`kubectl config`命令时不指明`--kubeconfig`的路径，那么以上创建的用户会配置在默认 config 文件中，那么设想一下如果 config 文件中有多个 kubernetes 集群以及用户，我们使用 kubectl 命令连接的是哪个 kubernetes 集群呢？kubernetes 使用了上下文这个设置非常巧妙的解决了我们管理多个集群的问题。上下文我理解为使用哪个用户登录哪个集群，又设置了一个选项 current-context 用来当前使用哪个上下文，在我们需要切换用户的时候只需要执行`kubectl config use-context miao@mycluster`来切换用户即可。
