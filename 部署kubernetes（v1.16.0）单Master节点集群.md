@@ -199,7 +199,8 @@ echo "${MASTER_IP}    ${APISERVER_NAME}" >> /etc/hosts
 #### 3.3、worker节点加入集群
 
 ```bash
-[root@node01 ~]#kubeadm join apiserver.demo:6443 --token mpfjma.4vjjg8flqihor4vt     --discovery-token-ca-cert-hash sha256:6f7a8e40a810323672de5eee6f4d19aa2dbdb38411845a1bf5dd63485c43d303
+# 在worker节点上执行kubeadm join命令
+[root@node01 ~]# kubeadm join apiserver.demo:6443 --token mpfjma.4vjjg8flqihor4vt     --discovery-token-ca-cert-hash sha256:6f7a8e40a810323672de5eee6f4d19aa2dbdb38411845a1bf5dd63485c43d303
 ```
 
 #### 3.4、检查初始化结果
