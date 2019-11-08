@@ -153,6 +153,7 @@ node01     Ready    <none>   11h   v1.16.0
 [root@master01 ~]# kubectl get svc
 NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   17h
+
 # 通过查看 ipvs 规则，我们可以看到发送至 10.96.0.1 的请求都被负载至所有master节点。
 [root@master01 ~]# ipvsadm -Ln
 IP Virtual Server version 1.2.1 (size=4096)
