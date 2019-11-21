@@ -1,0 +1,48 @@
+groups:
+- name: example
+  rules:
+  - alert: "实例丢失"
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: page
+    annotations:
+      summary: "服务器实例 {{ $labels.instance }} 丢失"
+      description: "{{ $labels.instance }} 上的任务 {{ $labels.job }} 已经停止1分钟以上了"
+
+  - alert: "磁盘根目录容量小于 20%"
+    expr: 100 - ((node_filesystem_avail_bytes{device="/dev/mapper/centos-root",mountpoint="/",fstype=~"ext4|xfs|ext2|ext3"} * 100) / node_filesystem_size_bytes {job="node",mountpoint=~".*",fstype=~"ext4|xfs|ext2|ext3"}) > 80
+    for: 30s
+    annotations:
+      summary: "服务器实例 {{ $labels.instance }} 磁盘根目录不足 告警通知"
+      description: "{{ $labels.instance }}磁盘 {{ $labels.device }} 资源 已不足 20%, 当前值: {{ $value }}"
+ 
+  - alert: "磁盘Home目录容量小于 20%"
+    expr: 100 - ((node_filesystem_avail_bytes{device="/dev/mapper/centos-home",mountpoint="/home",fstype=~"ext4|xfs|ext2|ext3"} * 100) / node_filesystem_size_bytes {job="node",mountpoint=~".*",fstype=~"ext4|xfs|ext2|ext3"}) > 80
+    for: 30s
+    annotations:
+      summary: "服务器实例 {{ $labels.instance }} 磁盘Home目录不足 告警通知"
+      description: "{{ $labels.instance }}磁盘 {{ $labels.device }} 资源 已不足 20%, 当前值: {{ $value }}"
+
+  - alert: "内存容量小于 10%"
+    expr: ((node_memory_MemTotal_bytes - node_memory_MemFree_bytes - node_memory_Buffers_bytes - node_memory_Cached_bytes) / (node_memory_MemTotal_bytes )) * 100 > 90
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: "服务器实例 {{ $labels.instance }} 内存不足 告警通知"
+      description: "{{ $labels.instance }}内存资源已不足 10%,当前值: {{ $value }}"
+
+  - alert: "CPU 平均负载大于 4 个"
+    expr: node_load5 > 4
+    for: 30s
+    annotations:
+      sumary: "服务器实例 {{ $labels.instance }} CPU 负载 告警通知"
+      description: "{{ $labels.instance }}CPU 平均负载(5 分钟) 已超过 4 ,当前值: {{ $value }}"
+
+  - alert: "CPU 使用率大于 90%"
+    expr: 100 - ((avg by (instance,job,env)(irate(node_cpu_seconds_total{mode="idle"}[30s]))) *100) > 90
+    for: 30s
+    annotations:
+      sumary: "服务器实例 {{ $labels.instance }} CPU 使用率 告警通知"
+      description: "{{ $labels.instance }}CPU 使用率已超过 90%, 当前值: {{ $value }}"

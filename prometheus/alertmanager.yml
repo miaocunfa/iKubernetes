@@ -1,0 +1,31 @@
+global:
+  resolve_timeout: 5m
+  smtp_smarthost: 'smtp.163.com:25'
+  smtp_from: 'miaocunf@163.com'
+  smtp_auth_username: 'miaocunf@163.com'
+  smtp_auth_password: 'mbky1234'
+
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  #receiver: 'web.hook'
+  receiver: live-monitoring
+
+receivers:
+- name: 'live-monitoring'
+  email_configs:
+  - to: 'i@miaocf.com'
+  - to: 'shu-xian@126.com'
+
+#- name: 'web.hook'
+#  webhook_configs:
+#  - url: 'http://127.0.0.1:5001/'
+
+#inhibit_rules:
+#  - source_match:
+#      severity: 'critical'
+#    target_match:
+#      severity: 'warning'
+#    equal: ['alertname', 'dev', 'instance']

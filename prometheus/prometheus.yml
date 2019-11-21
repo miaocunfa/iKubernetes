@@ -1,0 +1,59 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - localhost:9093
+
+rule_files:
+  - "alertrules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: 
+      - localhost:9090
+
+  - job_name: 'node'
+    static_configs:
+      - targets: 
+        - 192.168.100.211:10091
+        - 192.168.100.212:10091
+        - 192.168.100.213:10091
+        - 192.168.100.214:10091
+        - 192.168.100.215:10091
+        - 192.168.100.216:10091
+        - 192.168.100.217:10091
+        - 192.168.100.218:10091
+        - 192.168.100.221:10091
+        - 192.168.100.222:10091
+        - 192.168.100.223:10091
+        - 192.168.100.224:10091
+        - 192.168.100.225:10091
+        - 192.168.100.226:10091
+        - 192.168.100.231:10091
+        - 192.168.100.232:10091
+        - 192.168.100.233:10091
+        - 192.168.100.235:10091
+        - 192.168.100.236:10091
+        - 192.168.100.237:10091
+        - 192.168.100.238:10091
+
+  - job_name: 'redis'
+    static_configs:
+      - targets: 
+        - 192.168.100.211:9121
+        - 192.168.100.212:9121
+        labels:
+          instance: redis
+
+  - job_name: 'mysql'
+    static_configs:
+      - targets: 
+        - 192.168.100.212:9104
+        - 192.168.100.213:9104
+        labels:
+          instance: mysql
