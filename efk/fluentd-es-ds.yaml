@@ -71,7 +71,7 @@ spec:
       serviceAccountName: fluentd-es
       containers:
       - name: fluentd-es
-        image: quay.io/fluentd_elasticsearch/fluentd:v2.7.0
+        image: quay-mirror.qiniu.com/fluentd_elasticsearch/fluentd:v2.7.0
         env:
         - name: FLUENTD_ARGS
           value: --no-supervisor -q
@@ -99,4 +99,4 @@ spec:
           path: /var/lib/docker/containers
       - name: config-volume
         configMap:
-          name: fluentd-es-config-v0.2.0
+          name: fluentd-es-config-v0.1.4
