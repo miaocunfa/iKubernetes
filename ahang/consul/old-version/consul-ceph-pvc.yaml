@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: consul-ceph-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: dynamic-ceph-rdb
+  resources:
+    requests:
+      storage: 1Gi
