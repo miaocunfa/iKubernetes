@@ -2,8 +2,8 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: dynamic-ceph-rdb
-provisioner: ceph.com/rbd
-#provisioner: kubernetes.io/rbd
+#provisioner: ceph.com/rbd
+provisioner: kubernetes.io/rbd
 
 parameters:
   monitors: 192.168.100.251:6789

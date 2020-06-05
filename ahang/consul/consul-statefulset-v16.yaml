@@ -11,15 +11,15 @@ spec:
   serviceName: consul
   replicas: 3
   volumeClaimTemplates:
-      - metadata: 
-          name: consul-ceph-pvc
-        spec: 
-          storageClassName: dynamic-ceph-pve-rdb
-          accessModes:
+    - metadata:
+        name: consul-ceph-pvc
+      spec:
+        storageClassName: dynamic-ceph-rdb
+        accessModes:
           - ReadWriteOnce
-          resources:
-            requests:
-              storage: 2Gi
+        resources:
+          requests:
+            storage: 2Gi
   template:
     metadata:
       labels:
@@ -36,28 +36,29 @@ spec:
                       - consul
               topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: harbor233
       containers:
-      - name: consul
-        image: reg.test.local/library/consul:1.7
-        args:
-             - "agent"
-             - "-server"
-             - "-bootstrap-expect=3"
-             - "-ui"
-             - "-data-dir=/consul/data"
-             - "-bind=0.0.0.0"
-             - "-client=0.0.0.0"
-             - "-advertise=$(PODIP)"
-             - "-retry-join=consul-0.consul.$(NAMESPACE).svc.cluster.local"
-             - "-retry-join=consul-1.consul.$(NAMESPACE).svc.cluster.local"
-             - "-retry-join=consul-2.consul.$(NAMESPACE).svc.cluster.local"
-             - "-domain=cluster.local"
-             - "-disable-host-node-id"
-        volumeMounts:
+        - name: consul
+          image: reg.test.local/library/consul:1.7
+          args:
+            - "agent"
+            - "-server"
+            - "-bootstrap-expect=3"
+            - "-ui"
+            - "-data-dir=/consul/data"
+            - "-bind=0.0.0.0"
+            - "-client=0.0.0.0"
+            - "-advertise=$(PODIP)"
+            - "-retry-join=consul-0.consul.$(NAMESPACE).svc.cluster.local"
+            - "-retry-join=consul-1.consul.$(NAMESPACE).svc.cluster.local"
+            - "-retry-join=consul-2.consul.$(NAMESPACE).svc.cluster.local"
+            - "-domain=cluster.local"
+            - "-disable-host-node-id"
+          volumeMounts:
             - name: consul-ceph-pvc
               mountPath: /consul/data
-   
-        env:
+          env:
             - name: PODIP
               valueFrom:
                 fieldRef:
@@ -66,7 +67,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-        ports:
+          ports:
             - containerPort: 8500
               name: ui-port
             - containerPort: 8400
@@ -85,5 +86,3 @@ spec:
               name: consuldns
             - containerPort: 8300
               name: server
-      imagePullSecrets:
-      - name: harbor233 
