@@ -14,7 +14,7 @@ spec:
     - metadata:
         name: consul-ceph-pvc
       spec:
-        storageClassName: dynamic-ceph-rdb
+        storageClassName: dynamic-ceph-rbd
         accessModes:
           - ReadWriteOnce
         resources:
@@ -25,19 +25,19 @@ spec:
       labels:
         app: consul
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - consul
-              topologyKey: kubernetes.io/hostname
+#      affinity:
+#        podAntiAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#            - labelSelector:
+#                matchExpressions:
+#                  - key: app
+#                    operator: In
+#                    values:
+#                      - consul
+#              topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 10
       imagePullSecrets:
-        - name: harbor233
+        - name: registry-secret
       containers:
         - name: consul
           image: reg.test.local/library/consul:1.7
