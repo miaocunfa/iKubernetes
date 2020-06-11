@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: info-gateway
+  labels:
+    name: info-gateway
+spec:
+  selector:
+    matchLabels:
+      name: info-gateway
+  serviceName: info-gateway
+  replicas: 3
+  volumeClaimTemplates:
+      - metadata:
+          name: info-gateway-pvc
+        spec:
+          storageClassName: dynamic-ceph-rbd
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 2Gi
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        name: info-gateway
+    spec:
+      containers:
+      - name: info-gateway
+        image: reg.test.local/library/info-gateway:1.0
+        volumeMounts:
+           - name: info-gateway-pvc
+             mountPath: /opt/aihangxunxi/logs
+      resources:
+          # keep request = limit to keep this container in guaranteed class
+      imagePullSecrets:
+         - name: registry-secret

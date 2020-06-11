@@ -5,12 +5,12 @@ metadata:
    labels:    
      name: consul
 spec:  
-  # type: NodePort
+   type: NodePort
    ports:    
     - name: http      
       port: 8500      
       targetPort: 8500    
-     # nodePort: 31850
+      nodePort: 31850
     - name: https      
       port: 8443
       targetPort: 8443

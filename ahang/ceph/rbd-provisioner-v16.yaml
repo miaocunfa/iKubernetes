@@ -81,10 +81,12 @@ spec:
     spec: 
       containers: 
       - name: rbd-provisioner 
-        image: quay-mirror.qiniu.com/external_storage/rbd-provisioner:latest
+        image: reg.test.local/external_storage/rbd-provisioner:latest
         env: 
         - name: PROVISIONER_NAME 
           value: ceph.com/rbd 
+      imagePullSecrets:
+        - name: registry-secret
       serviceAccount: rbd-provisioner 
 --- 
 apiVersion: v1 

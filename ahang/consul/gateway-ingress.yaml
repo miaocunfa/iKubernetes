@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: ingress-consul
+  name: ingress-gateway
   namespace: default
   annotations: 
     kubernets.io/ingress.class: "nginx"
@@ -12,5 +12,5 @@ spec:
       paths:
       - path: 
         backend:
-          serviceName: consul
-          servicePort: 8500
+          serviceName: info-gateway
+          servicePort: 9999

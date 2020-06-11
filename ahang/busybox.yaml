@@ -1,0 +1,24 @@
+# This file should be kept in sync with cluster/gce/coreos/kube-manifests/addons/dashboard/dashboard-controller.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox
+  labels:
+    app: busybox
+spec:
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: busybox
+        image: reg.test.local/library/busybox:latest
+        command: [ "/bin/sh", "-ce", "tail -f /dev/null" ]
+        resources:
+          # keep request = limit to keep this container in guaranteed class
+      imagePullSecrets:
+        - name: registry-secret
+  selector:
+    matchLabels:
+      app: busybox
