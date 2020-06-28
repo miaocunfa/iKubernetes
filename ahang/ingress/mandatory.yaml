@@ -22,6 +22,7 @@ data:
    31777: "default/info-admin:7777"
    31850: "default/consul:8500"
    31999: "default/info-gateway:9999"
+   31966: "default/info-message-service:9666"
 
 ---
 kind: ConfigMap
