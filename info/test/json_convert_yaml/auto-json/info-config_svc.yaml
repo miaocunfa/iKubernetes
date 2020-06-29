@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: info-config
+  labels:
+    name: info-config
+    version: v1
+spec:
+  ports:
+  - name: port8888
+    port: 8888
+    targetPort: 8888
+  selector:
+    name: info-config

@@ -193,7 +193,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: ingress-nginx
@@ -213,9 +213,11 @@ spec:
       serviceAccountName: nginx-ingress-serviceaccount
       nodeSelector:
         kubernetes.io/os: linux
+      imagePullSecrets:
+        - name: registry-secret
       containers:
         - name: nginx-ingress-controller
-          image: registry.aliyuncs.com/google_containers/nginx-ingress-controller:0.26.2
+          image: reg.test.local/google_containers/nginx-ingress-controller:0.26.2
           args:
             - /nginx-ingress-controller
             - --configmap=$(POD_NAMESPACE)/nginx-configuration
