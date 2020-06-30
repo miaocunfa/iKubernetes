@@ -3,19 +3,36 @@ kind: Deployment
 metadata:
   name: info-news-service
   labels:
-    name: info-news-service
+    serviceName: info-news-service
 spec:
   selector:
     matchLabels:
-      name: info-news-service
+      serviceName: info-news-service
   replicas: 2
   template:
     metadata:
       labels:
-        name: info-news-service
+        serviceName: info-news-service
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: serviceName
+                  operator: In
+                  values:
+                  - info-news-service
       containers:
       - name: info-news-service
         image: reg.test.local/library/info-news-service:0.0.2
+        resources:
+          requests:
+            memory: 100Mi
+          limits:
+            memory: 1000Mi
       imagePullSecrets:
       - name: registry-secret

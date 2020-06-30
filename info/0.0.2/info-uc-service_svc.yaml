@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-uc-service
   labels:
-    name: info-uc-service
-    version: v1
+    serviceName: info-uc-service
+    tag: 0.0.2
 spec:
   ports:
   - name: port8800
     port: 8800
     targetPort: 8800
   selector:
-    name: info-uc-service
+    serviceName: info-uc-service

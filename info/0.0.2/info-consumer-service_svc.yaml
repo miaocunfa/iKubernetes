@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-consumer-service
   labels:
-    name: info-consumer-service
-    version: v1
+    serviceName: info-consumer-service
+    tag: 0.0.2
 spec:
   ports:
   - name: port8090
     port: 8090
     targetPort: 8090
   selector:
-    name: info-consumer-service
+    serviceName: info-consumer-service

@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-scheduler-service
   labels:
-    name: info-scheduler-service
-    version: v1
+    serviceName: info-scheduler-service
+    tag: 0.0.2
 spec:
   ports:
   - name: port8777
     port: 8777
     targetPort: 8777
   selector:
-    name: info-scheduler-service
+    serviceName: info-scheduler-service

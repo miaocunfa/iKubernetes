@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-config
   labels:
-    name: info-config
-    version: v1
+    serviceName: info-config
+    tag: 0.0.2
 spec:
   ports:
   - name: port8888
     port: 8888
     targetPort: 8888
   selector:
-    name: info-config
+    serviceName: info-config

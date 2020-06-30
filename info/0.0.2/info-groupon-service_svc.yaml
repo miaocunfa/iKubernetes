@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-groupon-service
   labels:
-    name: info-groupon-service
-    version: v1
+    serviceName: info-groupon-service
+    tag: 0.0.2
 spec:
   ports:
   - name: port8803
     port: 8803
     targetPort: 8803
   selector:
-    name: info-groupon-service
+    serviceName: info-groupon-service

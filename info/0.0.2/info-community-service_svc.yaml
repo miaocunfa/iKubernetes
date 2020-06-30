@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-community-service
   labels:
-    name: info-community-service
-    version: v1
+    serviceName: info-community-service
+    tag: 0.0.2
 spec:
   ports:
   - name: port8802
     port: 8802
     targetPort: 8802
   selector:
-    name: info-community-service
+    serviceName: info-community-service

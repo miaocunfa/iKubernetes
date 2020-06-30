@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-hotel-service
   labels:
-    name: info-hotel-service
-    version: v1
+    serviceName: info-hotel-service
+    tag: 0.0.2
 spec:
   ports:
   - name: port8804
     port: 8804
     targetPort: 8804
   selector:
-    name: info-hotel-service
+    serviceName: info-hotel-service

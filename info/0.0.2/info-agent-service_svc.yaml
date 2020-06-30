@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-agent-service
   labels:
-    name: info-agent-service
-    version: v1
+    serviceName: info-agent-service
+    tag: 0.0.2
 spec:
   ports:
   - name: port8809
     port: 8809
     targetPort: 8809
   selector:
-    name: info-agent-service
+    serviceName: info-agent-service

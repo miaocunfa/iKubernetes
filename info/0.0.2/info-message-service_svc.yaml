@@ -3,8 +3,8 @@ kind: Service
 metadata:
   name: info-message-service
   labels:
-    name: info-message-service
-    version: v1
+    serviceName: info-message-service
+    tag: 0.0.2
 spec:
   ports:
   - name: port8555
@@ -14,4 +14,4 @@ spec:
     port: 9666
     targetPort: 9666
   selector:
-    name: info-message-service
+    serviceName: info-message-service

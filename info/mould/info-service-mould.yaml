@@ -3,11 +3,12 @@ kind: Service
 metadata:
   name: ${jarName}
   labels:
-    name: ${jarName}
-    version: v1
+    serviceName: ${jarName}
+    tag: ${tag}
 spec:
   ports:
-    - port: ${port}
+    - name: ${portName}
+      port: ${port}
       targetPort: ${port}
   selector:
-    name: ${jarName}
+    serviceName: ${jarName}

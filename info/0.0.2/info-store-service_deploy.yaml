@@ -3,19 +3,36 @@ kind: Deployment
 metadata:
   name: info-store-service
   labels:
-    name: info-store-service
+    serviceName: info-store-service
 spec:
   selector:
     matchLabels:
-      name: info-store-service
+      serviceName: info-store-service
   replicas: 2
   template:
     metadata:
       labels:
-        name: info-store-service
+        serviceName: info-store-service
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: serviceName
+                  operator: In
+                  values:
+                  - info-store-service
       containers:
       - name: info-store-service
         image: reg.test.local/library/info-store-service:0.0.2
+        resources:
+          requests:
+            memory: 100Mi
+          limits:
+            memory: 1000Mi
       imagePullSecrets:
       - name: registry-secret

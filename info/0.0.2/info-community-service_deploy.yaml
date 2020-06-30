@@ -3,19 +3,36 @@ kind: Deployment
 metadata:
   name: info-community-service
   labels:
-    name: info-community-service
+    serviceName: info-community-service
 spec:
   selector:
     matchLabels:
-      name: info-community-service
+      serviceName: info-community-service
   replicas: 2
   template:
     metadata:
       labels:
-        name: info-community-service
+        serviceName: info-community-service
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: serviceName
+                  operator: In
+                  values:
+                  - info-community-service
       containers:
       - name: info-community-service
         image: reg.test.local/library/info-community-service:0.0.2
+        resources:
+          requests:
+            memory: 100Mi
+          limits:
+            memory: 1000Mi
       imagePullSecrets:
       - name: registry-secret

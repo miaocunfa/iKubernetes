@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-admin
   labels:
-    name: info-admin
-    version: v1
+    serviceName: info-admin
+    tag: 0.0.2
 spec:
   ports:
   - name: port7777
     port: 7777
     targetPort: 7777
   selector:
-    name: info-admin
+    serviceName: info-admin

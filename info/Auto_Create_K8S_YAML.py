@@ -15,7 +15,7 @@ from ruamel.yaml import YAML
 
 yaml = YAML()
 
-def create_service_yaml(service_name, ports):
+def create_service_yaml(service_name, tag, ports):
 
     service_mould_file = "mould/info-service-mould.yaml"
     isServiceMould = os.path.isfile(service_mould_file)
@@ -27,8 +27,9 @@ def create_service_yaml(service_name, ports):
 
         # Update jarName
         service_data['metadata']['name'] = service_name
-        service_data['metadata']['labels']['name'] = service_name
-        service_data['spec']['selector']['name'] = service_name
+        service_data['metadata']['labels']['serviceName'] = service_name
+        service_data['metadata']['labels']['tag'] = tag
+        service_data['spec']['selector']['serviceName'] = service_name
 
         # Update port
         new_spec_ports = []
@@ -51,6 +52,11 @@ def create_service_yaml(service_name, ports):
 
 def create_deploy_yaml(service_name, tag):
 
+    cpuRequest = "50m"
+    memoryRequest = "100Mi"
+    cpuLimit = "500m"
+    memoryLimit = "1000Mi"
+
     deploy_mould_file = "mould/info-deploy-mould.yaml"
     isDeployMould = os.path.isfile(deploy_mould_file)
 
@@ -60,14 +66,20 @@ def create_deploy_yaml(service_name, tag):
 
         # Update jarName
         deploy_data['metadata']['name'] = service_name
-        deploy_data['metadata']['labels']['name'] = service_name
-        deploy_data['spec']['selector']['matchLabels']['name'] = service_name
-        deploy_data['spec']['template']['metadata']['labels']['name'] = service_name  
+        deploy_data['metadata']['labels']['serviceName'] = service_name
+        deploy_data['spec']['selector']['matchLabels']['serviceName'] = service_name
+        deploy_data['spec']['template']['metadata']['labels']['serviceName'] = service_name  
 
         # Update containers
         image = "reg.test.local/library/" + service_name + ":" + tag
-        new_containers = [{'name': service_name, 'image': image}]
+        #resources = { "requests": {"cpu": cpuRequest, "memory": memoryRequest }, "limits": {"cpu": cpuLimit, "memory": memoryLimit } }
+        resources = { "requests": {"memory": memoryRequest }, "limits": {"memory": memoryLimit } }
+        new_containers = [{'name': service_name, 'image': image, 'resources': resources}]
         deploy_data['spec']['template']['spec']['containers'] = new_containers
+
+        # Update affinity
+        matchExpressions = [{'key': 'serviceName', 'operator': 'In', 'values': [service_name]}]
+        deploy_data['spec']['template']['spec']['affinity']['podAntiAffinity']['preferredDuringSchedulingIgnoredDuringExecution'][0]['podAffinityTerm']['labelSelector']['matchExpressions'] = matchExpressions
 
         # json To service yaml
         save_file = tag + '/' + service_name + '_deploy.yaml'
@@ -79,24 +91,116 @@ def create_deploy_yaml(service_name, tag):
         print("Deploy Mould File is Not Exist!")
 
 
+def create_basic_yaml(service_name, tag):
+
+    cpuRequest = "50m"
+    memoryRequest = "100Mi"
+    cpuLimit = "500m"
+    memoryLimit = "1000Mi"
+
+    basic_mould_file = "mould/info-basic-mould.yaml"
+    isbasicMould = os.path.isfile(basic_mould_file)
+
+    if isbasicMould:
+        with open(basic_mould_file, encoding='utf-8') as yaml_obj:
+            basic_data = yaml.load(yaml_obj)
+
+        # Update jarName
+        basic_data['metadata']['name'] = service_name
+        basic_data['metadata']['labels']['serviceName'] = service_name
+        basic_data['spec']['selector']['matchLabels']['serviceName'] = service_name
+        basic_data['spec']['template']['metadata']['labels']['serviceName'] = service_name  
+
+        # Update containers
+        image = "reg.test.local/library/" + service_name + ":" + tag
+        #resources = { "requests": {"cpu": cpuRequest, "memory": memoryRequest }, "limits": {"cpu": cpuLimit, "memory": memoryLimit } }
+        resources = { "requests": {"memory": memoryRequest }, "limits": {"memory": memoryLimit } }
+        new_containers = [{'name': service_name, 'image': image, 'resources': resources}]
+        basic_data['spec']['template']['spec']['containers'] = new_containers
+
+        # Update affinity
+        matchExpressions = [{'key': 'serviceName', 'operator': 'In', 'values': [service_name]}]
+        basic_data['spec']['template']['spec']['affinity']['podAntiAffinity']['preferredDuringSchedulingIgnoredDuringExecution'][0]['podAffinityTerm']['labelSelector']['matchExpressions'] = matchExpressions
+
+        # json To service yaml
+        save_file = tag + '/' + service_name + '_basic_deploy.yaml'
+        with open(save_file, mode='w', encoding='utf-8') as yaml_obj:
+            yaml.dump(basic_data, yaml_obj)
+
+        print(save_file + ": Success!")
+    else:
+        print("basic Mould File is Not Exist!")
+
+
 services = {
-    'info-gateway':               ['9999'],
-    'info-admin':                 ['7777'],
-    'info-config':                ['8888'],
-    'info-message-service':       ['8555', '9666'],
-    'info-auth-service':          ['8666'],
-    'info-scheduler-service':     ['8777'],
-    'info-uc-service':            ['8800'],
-    'info-ad-service':            ['8801'],
-    'info-community-service':     ['8802'],
-    'info-groupon-service':       ['8803'],
-    'info-hotel-service':         ['8804'],
-    'info-nearby-service':        ['8805'],
-    'info-news-service':          ['8806'],
-    'info-store-service':         ['8807'],
-    'info-payment-service':       ['8808'],
-    'info-agent-service':         ['8809'],
-    'info-consumer-service':      ['8090'],
+	'info-gateway': {
+		'ports': ['9999'],
+		'isBasic': '1',
+	},
+	'info-admin': {
+		'ports': ['7777'],
+		'isBasic': '1',
+	},
+	'info-config': {
+		'ports': ['8888'],
+		'isBasic': '1',
+	},
+	'info-message-service': {
+		'ports': ['8555', '9666'],
+		'isBasic': '0',
+	},
+	'info-auth-service': {
+		'ports': ['8666'],
+		'isBasic': '0',
+	},
+	'info-scheduler-service': {
+		'ports': ['8777'],
+		'isBasic': '0',
+	},
+	'info-uc-service': {
+		'ports': ['8800'],
+		'isBasic': '0',
+	},
+	'info-ad-service': {
+		'ports': ['8801'],
+		'isBasic': '0',
+	},
+	'info-community-service': {
+		'ports': ['8802'],
+		'isBasic': '0',
+	},
+	'info-groupon-service': {
+		'ports': ['8803'],
+		'isBasic': '0',
+	},
+	'info-hotel-service': {
+		'ports': ['8804'],
+		'isBasic': '0',
+	},
+	'info-nearby-service': {
+		'ports': ['8805'],
+		'isBasic': '0',
+	},
+	'info-news-service': {
+		'ports': ['8806'],
+		'isBasic': '0',
+	},
+	'info-store-service': {
+		'ports': ['8807'],
+		'isBasic': '0',
+	},
+	'info-payment-service': {
+		'ports': ['8808'],
+		'isBasic': '0',
+	},
+	'info-agent-service': {
+		'ports': ['8809'],
+		'isBasic': '0',
+	},
+	'info-consumer-service': {
+		'ports': ['8090'],
+		'isBasic': '0',
+	},
 }
 
 prompt = "\n请输入要生成的tag: "
@@ -108,6 +212,14 @@ if os.path.isdir(answer):
 else:
     tag = answer
     os.makedirs(tag)
-    for service_name, service_ports in services.items():
-        create_service_yaml(service_name, service_ports)
-        create_deploy_yaml(service_name, tag)
+    for service_name in services.keys():
+        if services[service_name]['isBasic'] == '1':
+            create_service_yaml(service_name, tag, services[service_name]['ports'])
+            create_basic_yaml(service_name, tag)
+        else:
+            create_service_yaml(service_name, tag, services[service_name]['ports'])
+            create_deploy_yaml(service_name, tag)
+
+#create_deploy_yaml('info-message-service', '0.0.2')
+#create_service_yaml('info-message-service', '0.0.2', ['8555', '9666'])
+#create_basic_yaml('info-gateway', '0.0.2')

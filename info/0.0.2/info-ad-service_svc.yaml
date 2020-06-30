@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-ad-service
   labels:
-    name: info-ad-service
-    version: v1
+    serviceName: info-ad-service
+    tag: 0.0.2
 spec:
   ports:
   - name: port8801
     port: 8801
     targetPort: 8801
   selector:
-    name: info-ad-service
+    serviceName: info-ad-service

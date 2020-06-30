@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: info-gateway
   labels:
-    name: info-gateway
-    version: v1
+    serviceName: info-gateway
+    tag: 0.0.2
 spec:
   ports:
   - name: port9999
     port: 9999
     targetPort: 9999
   selector:
-    name: info-gateway
+    serviceName: info-gateway
