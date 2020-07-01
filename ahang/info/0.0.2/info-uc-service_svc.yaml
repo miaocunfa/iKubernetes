@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: info-uc-service
+  labels:
+    serviceName: info-uc-service
+    tag: 0.0.2
+spec:
+  ports:
+  - name: port8800
+    port: 8800
+    targetPort: 8800
+  selector:
+    serviceName: info-uc-service

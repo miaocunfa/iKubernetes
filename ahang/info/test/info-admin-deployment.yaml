@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: info-admin
+  labels:
+    name: info-admin
+spec:
+  selector:
+    matchLabels:
+      name: info-admin
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: info-admin
+    spec:
+      containers:
+      - name: info-admin
+        image: reg.test.local/library/info-admin:0.0.1
+        volumeMounts:
+          - name: data
+            mountPath: /opt/aihangxunxi/logs
+      resources:
+          # keep request = limit to keep this container in guaranteed class
+      imagePullSecrets:
+        - name: registry-secret
+      volumes:
+        - name: data
+          hostPath:
+            path: /root
