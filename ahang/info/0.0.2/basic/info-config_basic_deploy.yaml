@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       serviceName: info-config
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:

@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       serviceName: info-message-service
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
