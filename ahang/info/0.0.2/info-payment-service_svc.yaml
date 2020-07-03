@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8808
-    port: 8808
-    targetPort: 8808
+    
+    - name: info-payment-service
+      port: 8808
+      targetPort: 8808
+    
   selector:
     serviceName: info-payment-service

@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8800
-    port: 8800
-    targetPort: 8800
+    
+    - name: info-uc-service
+      port: 8800
+      targetPort: 8800
+    
   selector:
     serviceName: info-uc-service

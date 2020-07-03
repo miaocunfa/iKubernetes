@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8888
-    port: 8888
-    targetPort: 8888
+    
+    - name: info-admin
+      port: 8888
+      targetPort: 8888
+    
   selector:
     serviceName: info-config

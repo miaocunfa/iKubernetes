@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8805
-    port: 8805
-    targetPort: 8805
+    
+    - name: info-nearby-service
+      port: 8805
+      targetPort: 8805
+    
   selector:
     serviceName: info-nearby-service

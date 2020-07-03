@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8666
-    port: 8666
-    targetPort: 8666
+    
+    - name: info-auth-service
+      port: 8666
+      targetPort: 8666
+    
   selector:
     serviceName: info-auth-service

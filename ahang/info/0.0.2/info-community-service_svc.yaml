@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8802
-    port: 8802
-    targetPort: 8802
+    
+    - name: info-community-service
+      port: 8802
+      targetPort: 8802
+    
   selector:
     serviceName: info-community-service

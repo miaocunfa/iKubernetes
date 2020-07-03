@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: info-message-service
+  name: info-admin
   labels:
-    serviceName: info-message-service
+    serviceName: info-admin
 spec:
   selector:
     matchLabels:
-      serviceName: info-message-service
+      serviceName: info-admin
   replicas: 1 
   template:
     metadata:
       labels:
-        serviceName: info-message-service
+        serviceName: info-admin
     spec:
       affinity:
         podAntiAffinity:
@@ -25,10 +25,10 @@ spec:
                 - key: serviceName
                   operator: In
                   values:
-                  - info-message-service
+                  - info-admin
       containers:
-      - name: info-message-service
-        image: reg.test.local/library/info-message-service:0.0.2
+      - name: info-admin
+        image: reg.test.local/library/info-admin:0.0.2
         resources:
           requests:
             # cpu: 50m

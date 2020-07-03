@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8090
-    port: 8090
-    targetPort: 8090
+    
+    - name: info-consumer-service
+      port: 8090
+      targetPort: 8090
+    
   selector:
     serviceName: info-consumer-service

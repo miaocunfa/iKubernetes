@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: info-message-service
+  name: {{ jarName }}
   labels:
-    serviceName: info-message-service
+    serviceName: {{ jarName }}
 spec:
   selector:
     matchLabels:
-      serviceName: info-message-service
-  replicas: 1 
+      serviceName: {{ jarName }}
+  replicas: {{ replicas }} 
   template:
     metadata:
       labels:
-        serviceName: info-message-service
+        serviceName: {{ jarName }}
     spec:
       affinity:
         podAntiAffinity:
@@ -25,16 +25,17 @@ spec:
                 - key: serviceName
                   operator: In
                   values:
-                  - info-message-service
+                  - {{ jarName }}
       containers:
-      - name: info-message-service
-        image: reg.test.local/library/info-message-service:0.0.2
+      - name: {{ jarName }}
+        image: reg.test.local/library/{{ jarName }}:{{ tag }}
         resources:
           requests:
-            # cpu: 50m
-            memory: 100Mi
+            # cpu: {{ cpuRequest }}
+            memory: {{ memoryRequest }}
           limits:
-            # cpu: 500m 
-            memory: 1000Mi
+            # cpu: {{ cpuLimit }} 
+            memory: {{ memoryLimit }}
       imagePullSecrets:
         - name: registry-secret
+

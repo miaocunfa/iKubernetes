@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8809
-    port: 8809
-    targetPort: 8809
+    
+    - name: info-agent-service
+      port: 8809
+      targetPort: 8809
+    
   selector:
     serviceName: info-agent-service

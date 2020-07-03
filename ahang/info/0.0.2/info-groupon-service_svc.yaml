@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8803
-    port: 8803
-    targetPort: 8803
+    
+    - name: info-groupon-service
+      port: 8803
+      targetPort: 8803
+    
   selector:
     serviceName: info-groupon-service

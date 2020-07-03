@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8777
-    port: 8777
-    targetPort: 8777
+    
+    - name: info-scheduler-service
+      port: 8777
+      targetPort: 8777
+    
   selector:
     serviceName: info-scheduler-service

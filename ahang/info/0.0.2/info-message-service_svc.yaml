@@ -7,11 +7,14 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8555
-    port: 8555
-    targetPort: 8555
-  - name: port9666
-    port: 9666
-    targetPort: 9666
+    
+    - name: message-web
+      port: 8555
+      targetPort: 8555
+    
+    - name: message-socket
+      port: 9666
+      targetPort: 9666
+    
   selector:
     serviceName: info-message-service

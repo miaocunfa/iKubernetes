@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8804
-    port: 8804
-    targetPort: 8804
+    
+    - name: info-hotel-service
+      port: 8804
+      targetPort: 8804
+    
   selector:
     serviceName: info-hotel-service

@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port9999
-    port: 9999
-    targetPort: 9999
+    
+    - name: info-gateway
+      port: 9999
+      targetPort: 9999
+    
   selector:
     serviceName: info-gateway

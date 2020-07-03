@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       serviceName: info-consumer-service
-  replicas: 1
+  replicas: 1 
   template:
     metadata:
       labels:
@@ -31,8 +31,10 @@ spec:
         image: reg.test.local/library/info-consumer-service:0.0.2
         resources:
           requests:
+            # cpu: 50m
             memory: 100Mi
           limits:
+            # cpu: 500m 
             memory: 1000Mi
       imagePullSecrets:
-      - name: registry-secret
+        - name: registry-secret

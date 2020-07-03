@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8801
-    port: 8801
-    targetPort: 8801
+    
+    - name: info-ad-service
+      port: 8801
+      targetPort: 8801
+    
   selector:
     serviceName: info-ad-service

@@ -7,8 +7,10 @@ metadata:
     tag: 0.0.2
 spec:
   ports:
-  - name: port8806
-    port: 8806
-    targetPort: 8806
+    
+    - name: info-news-service
+      port: 8806
+      targetPort: 8806
+    
   selector:
     serviceName: info-news-service
