@@ -1,0 +1,36 @@
+additionalTrustedCAs: false
+antiAffinity: preferred
+auditLog:
+  destination: sidecar
+  hostPath: /var/log/rancher/audit/
+  level: 0
+  maxAge: 1
+  maxBackup: 1
+  maxSize: 100
+addLocal: "auto"
+busyboxImage: busybox
+debug: false
+hostname: rancher.test.local
+imagePullSecrets: [{'name': 'registry-secret'}]
+ingress:
+  extraAnnotations:
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+  tls:
+    source: secret
+letsEncrypt:
+  environment: production
+  ingress:
+    class: ""
+privateCA: true
+noProxy: 127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+rancherImage: reg.test.local/library/rancher
+rancherImageTag: v2.4.5
+replicas: 3
+resources: {}
+tls: ingress
+systemDefaultRegistry: ""
+useBundledSystemChart: false
+certmanager: 
+  version: ""

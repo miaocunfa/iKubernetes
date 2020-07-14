@@ -23,6 +23,7 @@ data:
    31850: "default/consul:8500"
    31999: "default/info-gateway:9999"
    31966: "default/info-message-service:9666"
+   #31031: "cattle-system/rancher:80"
 
 ---
 kind: ConfigMap

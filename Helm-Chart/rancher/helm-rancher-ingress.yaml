@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rancher
+  namespace: cattle-system # 需要添加这一行
+  labels:
+    app: rancher
+    chart: rancher-2.4.5
+    heritage: Helm
+    release: rancher
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+spec:
+  rules:
+  - host:
+    http:
+      paths:
+      - backend:
+          serviceName: rancher
+          servicePort: 80
+  #tls:
+  #- hosts:
+  #  - rancher.my.org
+  #  secretName: tls-rancher-ingress

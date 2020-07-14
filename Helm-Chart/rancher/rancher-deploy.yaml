@@ -1,0 +1,81 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: rancher
+  namespace: cattle-system
+  labels:
+    app: rancher
+    chart: rancher-2.4.5
+    heritage: Helm
+    release: rancher
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rancher
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: rancher
+        release: rancher
+    spec:
+      serviceAccountName: rancher
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - rancher
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - image: rancher/rancher:v2.4.5
+        imagePullPolicy: IfNotPresent
+        name: rancher
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        args:
+        # Private CA - don't clear ca certs
+        - "--http-listen-port=80"
+        #- "--https-listen-port=443"
+        - "--add-local=auto"
+        env:
+        - name: CATTLE_NAMESPACE
+          value: cattle-system
+        - name: CATTLE_PEER_SERVICE
+          value: rancher
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        resources:
+          {}
+        volumeMounts:
+        # Pass CA cert into rancher for private CA
+        - mountPath: /etc/rancher/ssl/cacerts.pem
+          name: tls-ca-volume
+          subPath: cacerts.pem
+          readOnly: true
+      volumes:
+      - name: tls-ca-volume
+        secret:
+          defaultMode: 0400
+          secretName: tls-ca
