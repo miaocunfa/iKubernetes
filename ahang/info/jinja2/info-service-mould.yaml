@@ -4,6 +4,7 @@ metadata:
   name: {{ jarName }}
   labels:
     serviceName: {{ jarName }}
+    project: ahxx-2.0
     tag: {{ tag }}
 spec:
   ports:

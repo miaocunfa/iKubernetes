@@ -4,6 +4,7 @@ metadata:
   name: {{ jarName }}
   labels:
     serviceName: {{ jarName }}
+    project: ahxx-2.0
 spec:
   selector:
     matchLabels:
@@ -13,6 +14,7 @@ spec:
     metadata:
       labels:
         serviceName: {{ jarName }}
+        project: ahxx-2.0
     spec:
       affinity:
         podAntiAffinity:
