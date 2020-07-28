@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: info-hotel-service
+  labels:
+    serviceName: info-hotel-service
+    tag: 0.0.2
+spec:
+  ports:
+    
+    - name: info-hotel-service
+      port: 8804
+      targetPort: 8804
+    
+  selector:
+    serviceName: info-hotel-service

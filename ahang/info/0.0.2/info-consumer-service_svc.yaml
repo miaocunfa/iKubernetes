@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: info-consumer-service
+  labels:
+    serviceName: info-consumer-service
+    tag: 0.0.2
+spec:
+  ports:
+    
+    - name: info-consumer-service
+      port: 8090
+      targetPort: 8090
+    
+  selector:
+    serviceName: info-consumer-service

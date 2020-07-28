@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: info-message-service
+  labels:
+    serviceName: info-message-service
+spec:
+  selector:
+    matchLabels:
+      serviceName: info-message-service
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        serviceName: info-message-service
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: serviceName
+                  operator: In
+                  values:
+                  - info-message-service
+      containers:
+      - name: info-message-service
+        image: reg.test.local/library/info-message-service:0.0.2
+      imagePullSecrets:
+      - name: registry-secret

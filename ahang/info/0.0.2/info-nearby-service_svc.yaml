@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: info-nearby-service
+  labels:
+    serviceName: info-nearby-service
+    tag: 0.0.2
+spec:
+  ports:
+    
+    - name: info-nearby-service
+      port: 8805
+      targetPort: 8805
+    
+  selector:
+    serviceName: info-nearby-service

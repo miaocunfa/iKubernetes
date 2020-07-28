@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: info-config
+  labels:
+    serviceName: info-config
+spec:
+  selector:
+    matchLabels:
+      serviceName: info-config
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        serviceName: info-config
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: serviceName
+                  operator: In
+                  values:
+                  - info-config
+      containers:
+      - name: info-config
+        image: reg.test.local/library/info-config:0.0.2
+        resources:
+          requests:
+            # cpu: 50m
+            memory: 100Mi
+          limits:
+            # cpu: 500m 
+            memory: 1000Mi
+      imagePullSecrets:
+        - name: registry-secret

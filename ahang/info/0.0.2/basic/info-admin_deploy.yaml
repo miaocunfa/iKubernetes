@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: info-admin
+  labels:
+    serviceName: info-admin
+spec:
+  selector:
+    matchLabels:
+      serviceName: info-admin
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        serviceName: info-admin
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: serviceName
+                  operator: In
+                  values:
+                  - info-admin
+      containers:
+      - name: info-admin
+        image: reg.test.local/library/info-admin:0.0.2
+        resources:
+          requests:
+            # cpu: 50m
+            memory: 100Mi
+          limits:
+            # cpu: 500m 
+            memory: 1000Mi
+      imagePullSecrets:
+        - name: registry-secret

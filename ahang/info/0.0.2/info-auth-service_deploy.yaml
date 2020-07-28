@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: info-auth-service
+  labels:
+    serviceName: info-auth-service
+spec:
+  selector:
+    matchLabels:
+      serviceName: info-auth-service
+  replicas: 2 
+  template:
+    metadata:
+      labels:
+        serviceName: info-auth-service
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: serviceName
+                  operator: In
+                  values:
+                  - info-auth-service
+      containers:
+      - name: info-auth-service
+        image: reg.test.local/library/info-auth-service:0.0.2
+        resources:
+          requests:
+            # cpu: 50m
+            memory: 100Mi
+          limits:
+            # cpu: 500m 
+            memory: 1000Mi
+      imagePullSecrets:
+        - name: registry-secret

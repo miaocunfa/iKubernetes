@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: info-agent-service
+  labels:
+    serviceName: info-agent-service
+    tag: 0.0.2
+spec:
+  ports:
+    
+    - name: info-agent-service
+      port: 8809
+      targetPort: 8809
+    
+  selector:
+    serviceName: info-agent-service

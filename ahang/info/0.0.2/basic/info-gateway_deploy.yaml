@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: info-gateway
+  labels:
+    serviceName: info-gateway
+spec:
+  selector:
+    matchLabels:
+      serviceName: info-gateway
+  replicas: 2 
+  template:
+    metadata:
+      labels:
+        serviceName: info-gateway
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: serviceName
+                  operator: In
+                  values:
+                  - info-gateway
+      containers:
+      - name: info-gateway
+        image: reg.test.local/library/info-gateway:0.0.2
+        resources:
+          requests:
+            # cpu: 50m
+            memory: 100Mi
+          limits:
+            # cpu: 500m 
+            memory: 1000Mi
+      imagePullSecrets:
+        - name: registry-secret

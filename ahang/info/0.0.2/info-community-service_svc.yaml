@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: info-community-service
+  labels:
+    serviceName: info-community-service
+    tag: 0.0.2
+spec:
+  ports:
+    
+    - name: info-community-service
+      port: 8802
+      targetPort: 8802
+    
+  selector:
+    serviceName: info-community-service

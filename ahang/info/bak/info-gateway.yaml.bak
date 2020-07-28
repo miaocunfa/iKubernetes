@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: info-gateway
+  labels:
+    name: info-gateway
+spec:
+  selector:
+    matchLabels:
+      name: info-gateway
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        name: info-gateway
+    spec:
+      containers:
+      - name: info-gateway
+        image: reg.test.local/library/info-gateway:1.0
+        volumeMounts:
+          - name: data
+            mountPath: /opt/aihangxunxi/logs
+      resources:
+          # keep request = limit to keep this container in guaranteed class
+      imagePullSecrets:
+        - name: harbor233
+      volumes:
+        - name: data
+          hostPath:
+            path: /root

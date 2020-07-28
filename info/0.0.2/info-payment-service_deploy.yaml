@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: info-payment-service
+  labels:
+    serviceName: info-payment-service
+spec:
+  selector:
+    matchLabels:
+      serviceName: info-payment-service
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        serviceName: info-payment-service
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: serviceName
+                  operator: In
+                  values:
+                  - info-payment-service
+      containers:
+      - name: info-payment-service
+        image: reg.test.local/library/info-payment-service:0.0.2
+        resources:
+          requests:
+            memory: 100Mi
+          limits:
+            memory: 1000Mi
+      imagePullSecrets:
+      - name: registry-secret

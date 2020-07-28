@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: info-message-service
+  labels:
+    serviceName: info-message-service
+    tag: 0.0.2
+spec:
+  ports:
+    
+    - name: message-web
+      port: 8555
+      targetPort: 8555
+    
+    - name: message-socket
+      port: 9666
+      targetPort: 9666
+    
+  selector:
+    serviceName: info-message-service
