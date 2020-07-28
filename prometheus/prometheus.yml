@@ -6,20 +6,24 @@ alerting:
   alertmanagers:
   - static_configs:
     - targets:
+      # alertmanager 服务端口
       - localhost:9093
 
+# 报警规则文件
 rule_files:
   - "alertrules.yml"
 
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
-    - targets: 
+    - targets:
+      # prometheus 服务端口
       - localhost:9090
 
-  - job_name: 'node'
+  - job_name: 'node-21x'
     static_configs:
-      - targets: 
+      - targets:
+        # 监听 node_exporter 服务
         - 192.168.100.211:10091
         - 192.168.100.212:10091
         - 192.168.100.213:10091
@@ -28,23 +32,43 @@ scrape_configs:
         - 192.168.100.216:10091
         - 192.168.100.217:10091
         - 192.168.100.218:10091
+        - 192.168.100.219:10091
+        labels:
+          instance: node-21x
+
+  - job_name: 'node-22x'
+    static_configs:
+      - targets:
         - 192.168.100.221:10091
         - 192.168.100.222:10091
         - 192.168.100.223:10091
         - 192.168.100.224:10091
         - 192.168.100.225:10091
         - 192.168.100.226:10091
+        - 192.168.100.227:10091
+        - 192.168.100.228:10091
+        - 192.168.100.229:10091
+        labels:
+          instance: node-22x
+
+  - job_name: 'node-23x'
+    static_configs:
+      - targets:
         - 192.168.100.231:10091
         - 192.168.100.232:10091
         - 192.168.100.233:10091
+        - 192.168.100.234:10091
         - 192.168.100.235:10091
         - 192.168.100.236:10091
         - 192.168.100.237:10091
         - 192.168.100.238:10091
+        - 192.168.100.239:10091
+        labels:
+          instance: node-23x
 
   - job_name: 'redis'
     static_configs:
-      - targets: 
+      - targets:
         - 192.168.100.211:9121
         - 192.168.100.212:9121
         labels:
@@ -52,8 +76,35 @@ scrape_configs:
 
   - job_name: 'mysql'
     static_configs:
-      - targets: 
+      - targets:
         - 192.168.100.212:9104
         - 192.168.100.213:9104
         labels:
           instance: mysql
+
+  - job_name: 'es'
+    static_configs:
+      - targets:
+        - 192.168.100.211:9114
+        - 192.168.100.212:9114
+        - 192.168.100.213:9114
+        labels:
+          instance: elasticsearch
+
+  - job_name: 'service_ps'
+    static_configs:
+      - targets:
+        - 192.168.100.214:9256
+        - 192.168.100.215:9256
+        - 192.168.100.216:9256
+        labels:
+          instance: process
+
+  - job_name: 'postgre'
+    static_configs:
+      - targets:
+        - 192.168.100.211:9187
+        - 192.168.100.212:9187
+        - 192.168.100.213:9187
+        labels:
+          instance: postgre
